@@ -1,0 +1,101 @@
+syntax = "proto3";
+package planet.v1;
+option go_package = "github.com/StartUpNationLabs/realtime-planet-api/gen/go/planet/v1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+// Planet represents a planet in the solar system.
+message Planet {
+  string id = 1;
+  string name = 2;
+  OrbitalParameters orbital_parameters = 3; // Paramètres orbitaux
+  EllipticalCoordinates elliptical_coordinates = 4; // Coordonnées elliptiques
+  EquatorialCoordinates equatorial_coordinates = 5; // Coordonnées équatoriales
+  GeoCoordinates geo_coordinates = 6;   // Coordonnées géocentriques
+  double distance_from_sun_au = 7;      // Distance en AU
+}
+
+message MinimalPlanet {
+  string id = 1;
+  string name = 2;
+}
+
+message OrbitalParameters {
+  double semi_major_axis = 1;        // Semi-grand axe (en AU)
+  double eccentricity = 2;           // Excentricité
+  double inclination = 3;            // Inclinaison (en degrés)
+  double longitude_of_ascending_node = 4; // Longitude du nœud ascendant (en degrés)
+  double argument_of_periapsis = 5;  // Argument du périastre (en degrés)
+  double mean_anomaly_at_epoch = 6;  // Anomalie moyenne à l'époque (en degrés)
+  google.protobuf.Timestamp epoch = 7; // Époque de référence
+}
+
+message EllipticalCoordinates {
+  double longitude = 1; // Longitude elliptique (en degrés)
+  double latitude = 2;  // Latitude elliptique (en degrés)
+}
+
+message EquatorialCoordinates {
+  double xeq = 1;          // Coordonnée X équatoriale
+  double yeq = 2;          // Coordonnée Y équatoriale
+  double zeq = 3;          // Coordonnée Z équatoriale
+  double right_ascension = 4; // Ascension droite (en degrés)
+  double declination = 5;     // Déclinaison (en degrés)
+}
+
+message GeoCoordinates {
+  double longitude = 1; // Longitude géocentrique (en degrés)
+  double latitude = 2;  // Latitude géocentrique (en degrés)
+}
+
+message PlanetDetailRequest {
+  string id = 1;
+}
+
+message PlanetDetail {
+  Planet planet = 1;
+}
+
+message GetMinimalPlanetsResponse {
+  repeated MinimalPlanet planets = 1;
+}
+
+message GetPlanetPositionsRequest {
+  google.protobuf.Timestamp time = 1;
+}
+
+message GetPlanetPositionsResponse {
+  repeated Planet planets = 1;
+}
+
+message PlanetPathRequest {
+  string id = 1;
+  google.protobuf.Timestamp time = 2;
+  int32 resolution = 3;
+}
+
+message GeoPoint {
+  double lat = 1;
+  double lon = 2;
+  double altitude = 3;
+}
+
+message GetPlanetPathResponse {
+  repeated GeoPoint path = 1;
+}
+
+service PlanetService {
+  rpc GetPlanetDetail(PlanetDetailRequest) returns (PlanetDetail) {
+    option (google.api.http) = {
+      get: "/v1/planet/detail/{id}"
+    };
+  }
+
+  rpc GetPlanetPositions(GetPlanetPositionsRequest) returns (GetPlanetPositionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/planet/positions"
+    };
+  }
+}
