@@ -1,0 +1,264 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/planet/v1/planet.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "PlanetService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/planet/detail/{id}": {
+      "get": {
+        "operationId": "PlanetService_GetPlanetDetail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PlanetDetail"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PlanetService"
+        ]
+      }
+    },
+    "/v1/planet/positions": {
+      "get": {
+        "operationId": "PlanetService_GetPlanetPositions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetPlanetPositionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "time",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "PlanetService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1EllipticalCoordinates": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "title": "Longitude elliptique (en degrés)"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "title": "Latitude elliptique (en degrés)"
+        }
+      }
+    },
+    "v1EquatorialCoordinates": {
+      "type": "object",
+      "properties": {
+        "xeq": {
+          "type": "number",
+          "format": "double",
+          "title": "Coordonnée X équatoriale"
+        },
+        "yeq": {
+          "type": "number",
+          "format": "double",
+          "title": "Coordonnée Y équatoriale"
+        },
+        "zeq": {
+          "type": "number",
+          "format": "double",
+          "title": "Coordonnée Z équatoriale"
+        },
+        "rightAscension": {
+          "type": "number",
+          "format": "double",
+          "title": "Ascension droite (en degrés)"
+        },
+        "declination": {
+          "type": "number",
+          "format": "double",
+          "title": "Déclinaison (en degrés)"
+        }
+      }
+    },
+    "v1GeoCoordinates": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "title": "Longitude géocentrique (en degrés)"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "title": "Latitude géocentrique (en degrés)"
+        }
+      }
+    },
+    "v1GetPlanetPositionsResponse": {
+      "type": "object",
+      "properties": {
+        "planets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Planet"
+          }
+        }
+      }
+    },
+    "v1OrbitalParameters": {
+      "type": "object",
+      "properties": {
+        "semiMajorAxis": {
+          "type": "number",
+          "format": "double",
+          "title": "Semi-grand axe (en AU)"
+        },
+        "eccentricity": {
+          "type": "number",
+          "format": "double",
+          "title": "Excentricité"
+        },
+        "inclination": {
+          "type": "number",
+          "format": "double",
+          "title": "Inclinaison (en degrés)"
+        },
+        "longitudeOfAscendingNode": {
+          "type": "number",
+          "format": "double",
+          "title": "Longitude du nœud ascendant (en degrés)"
+        },
+        "argumentOfPeriapsis": {
+          "type": "number",
+          "format": "double",
+          "title": "Argument du périastre (en degrés)"
+        },
+        "meanAnomalyAtEpoch": {
+          "type": "number",
+          "format": "double",
+          "title": "Anomalie moyenne à l'époque (en degrés)"
+        },
+        "epoch": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Époque de référence"
+        }
+      }
+    },
+    "v1Planet": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "orbitalParameters": {
+          "$ref": "#/definitions/v1OrbitalParameters",
+          "title": "Paramètres orbitaux"
+        },
+        "ellipticalCoordinates": {
+          "$ref": "#/definitions/v1EllipticalCoordinates",
+          "title": "Coordonnées elliptiques"
+        },
+        "equatorialCoordinates": {
+          "$ref": "#/definitions/v1EquatorialCoordinates",
+          "title": "Coordonnées équatoriales"
+        },
+        "geoCoordinates": {
+          "$ref": "#/definitions/v1GeoCoordinates",
+          "title": "Coordonnées géocentriques"
+        },
+        "distanceFromSunAu": {
+          "type": "number",
+          "format": "double",
+          "title": "Distance en AU"
+        }
+      },
+      "description": "Planet represents a planet in the solar system."
+    },
+    "v1PlanetDetail": {
+      "type": "object",
+      "properties": {
+        "planet": {
+          "$ref": "#/definitions/v1Planet"
+        }
+      }
+    }
+  }
+}

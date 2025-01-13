@@ -8,7 +8,7 @@ plugins:
     out: gen/go
     opt:
       - paths=source_relative
-  - name: grpc-gateway
+  - plugin: buf.build/grpc-ecosystem/gateway
     out: gen/go
     opt:
       - paths=source_relative

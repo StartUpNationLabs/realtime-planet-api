@@ -1,6 +1,6 @@
 syntax = "proto3";
 package planet.v1;
-option go_package = "github.com/StartUpNationLabs/realtime-planet-api/gen/go/planet/v1";
+option go_package = "github.com/StartUpNationLabs/realtime-planet-api/gen/rust/planet/v1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
